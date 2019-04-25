@@ -9,20 +9,25 @@ namespace TodoAppTests
 {
 
     [TestClass]
-    [TestCategory("Login")]
-    public class UnitTest1
+    [TestCategory("Logging in to website")]
+    public class LocatingInputs
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-            var driver = GetChromeDriver();
-            driver.Navigate().GoToUrl("slonczynski.github.io");
-        }
-
+        
         private IWebDriver GetChromeDriver()
+        
         {
             var outPutDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             return new ChromeDriver(outPutDirectory);
         }
+        [TestMethod]
+        public void TestMethod1()
+        {
+            var driver = GetChromeDriver();
+            driver.Navigate().GoToUrl("https://slonczynski.github.io");
+        }
+
+
     }
+
 }
+
