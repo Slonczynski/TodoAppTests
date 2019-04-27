@@ -12,7 +12,7 @@ namespace TodoAppTests
 
     [TestClass]
     [TestCategory("Logging in to website")]
-    public class LoginPage
+    public class Login
     {
  
         private IWebDriver driver;
@@ -56,9 +56,19 @@ namespace TodoAppTests
         {
             // Check log in button
             driver.FindElement(By.Id("login-button")).Click();
-
+            var errorMessage = driver.FindElement(By.Id("error-message")).Text;
+            Assert.AreEqual("The email address is badly formatted.", errorMessage);
+            
         }
 
+        [TestMethod]
+        public void CheckRedirection()
+        {
+            driver.FindElement(By.Id("create-an-account-button")).Click();
+            string currentUrl = driver.Url;
+            Assert.AreEqual("https://slonczynski.github.io/register.html", currentUrl);
+            ;
+        }
 
         [TestCleanup]
         public void TestEnd()
