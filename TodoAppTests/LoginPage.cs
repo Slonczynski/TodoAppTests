@@ -1,82 +1,114 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 
 namespace TodoAppTests
 {
 
     [TestClass]
     [TestCategory("Logging in to website")]
-    public class Login
+    public class LoginPage
     {
- 
-        private IWebDriver driver;
+
+        private IWebDriver _driver;
 
         [TestInitialize]
         public void GetChromeDriver()
-        
+
         {
             // Get Chrome driver location
             var outPutDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            // Create an instance of Chrome driver
-            driver = new ChromeDriver(outPutDirectory);
+            // Runs headless Chrome
+            ChromeOptions option = new ChromeOptions();
+            option.AddArgument("--headless");
+            _driver = new ChromeDriver(outPutDirectory, option);
             // Navigate to a website
-            driver.Navigate().GoToUrl("https://slonczynski.github.io");
+            _driver.Navigate().GoToUrl("https://slonczynski.github.io");
+        }
+
+        [TestCleanup]
+        public void Teardown()
+        {
+            _driver.Close();
+            _driver.Quit();
         }
 
         [TestMethod]
         public void CheckElementsExistence()
         {
-            // *Check texts*
 
             // Check welcome message
-            var signText = driver.FindElement(By.ClassName("sign-text")).Text;
+            var signText = _driver.FindElement(By.ClassName("sign-text")).Text;
             Assert.AreEqual("Sign in:", signText);
 
             // Check number of inputs
-            var inputs = driver.FindElements(By.ClassName("form-control")).Count;
+            var inputs = _driver.FindElements(By.ClassName("form-control")).Count;
             Assert.AreEqual(2, inputs);
 
-            // Check if inputs exist
-            var inputEmail = driver.FindElement(By.Id("input-email"));
-            var inputPassword = driver.FindElement(By.Id("input-password"));
 
-            // Check if buttons exist
-            var loginButton = driver.FindElement(By.Id("login-button"));
-            var createButton = driver.FindElement(By.Id("create-an-account-button"));
+            // **Check if inputs exist**
+
+            // Email input
+            _driver.FindElement(By.Id("input-email"));
+            // Password input
+            _driver.FindElement(By.Id("input-password"));
+
+
+            // **Check if buttons exist**
+
+            // Login button
+            _driver.FindElement(By.Id("login-button"));
+            //Create account button
+            _driver.FindElement(By.Id("create-an-account-button"));
         }
 
         [TestMethod]
         public void CheckButtons()
         {
             // Check log in button
-            driver.FindElement(By.Id("login-button")).Click();
-            var errorMessage = driver.FindElement(By.Id("error-message")).Text;
+            _driver.FindElement(By.Id("login-button")).Click();
+            var errorMessage = _driver.FindElement(By.Id("error-message")).Text;
             Assert.AreEqual("The email address is badly formatted.", errorMessage);
-            
         }
 
         [TestMethod]
         public void CheckRedirection()
         {
-            driver.FindElement(By.Id("create-an-account-button")).Click();
-            string currentUrl = driver.Url;
+            _driver.FindElement(By.Id("create-an-account-button")).Click();
+            var currentUrl = _driver.Url;
             Assert.AreEqual("https://slonczynski.github.io/register.html", currentUrl);
-            ;
         }
 
-        [TestCleanup]
-        public void TestEnd()
+        [TestMethod]
+        public void LoginTest()
         {
-            driver.Close();
+            // Fill inputs with credentials
+            FillOutCredentials();
+
+            // Click login button
+            _driver.FindElement(By.Id("login-button")).Click();
+
+            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+
+            //Check if spinner exists
+
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+            Assert.IsTrue(wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("spinner-border"))).Displayed);
+
+        }
+
+        private void FillOutCredentials()
+        {
+            _driver.FindElement(By.Id("input-email")).SendKeys("automated@testing.selenium");
+            _driver.FindElement(By.Id("input-password")).SendKeys("123456");
         }
 
     }
-
 }
-
