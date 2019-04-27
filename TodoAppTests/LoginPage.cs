@@ -60,7 +60,6 @@ namespace TodoAppTests
             // Password input
             _driver.FindElement(By.Id("input-password"));
 
-
             // **Check if buttons exist**
 
             // Login button
@@ -90,18 +89,16 @@ namespace TodoAppTests
         public void LoginTest()
         {
             // Fill inputs with credentials
+
             FillOutCredentials();
 
             // Click login button
             _driver.FindElement(By.Id("login-button")).Click();
 
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-
-            //Check if spinner exists
+            //Check if spinner works
 
             var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
-            Assert.IsTrue(wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("spinner-border"))).Displayed);
-
+            Assert.IsTrue(wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.ClassName("spinner-border"))).Displayed);
         }
 
         private void FillOutCredentials()
@@ -109,6 +106,5 @@ namespace TodoAppTests
             _driver.FindElement(By.Id("input-email")).SendKeys("automated@testing.selenium");
             _driver.FindElement(By.Id("input-password")).SendKeys("123456");
         }
-
     }
 }
