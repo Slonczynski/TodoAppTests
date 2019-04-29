@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -135,7 +133,6 @@ namespace TodoAppTests
         [TestMethod]
         public void TestCase17()
         {
-
             // Enter email
             _driver.FindElement(By.Id("input-email")).SendKeys(RandomEmailGenerator());
 
@@ -191,7 +188,6 @@ namespace TodoAppTests
 
             var currentUrl = _driver.Url;
             Assert.AreEqual("https://slonczynski.github.io/todo.html", currentUrl);
-
         }
 
 

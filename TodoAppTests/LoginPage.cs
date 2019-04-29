@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -26,10 +23,10 @@ namespace TodoAppTests
             {
                 // Get Chrome driver location
                 var outPutDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            // Runs headless Chrome
-            //ChromeOptions option = new ChromeOptions();
-            //option.AddArguments("--headless", "--enable-features=NetworkService");
-            _driver = new ChromeDriver(outPutDirectory/*, option*/);
+                // Runs headless Chrome
+                //ChromeOptions option = new ChromeOptions();
+                //option.AddArguments("--headless", "--enable-features=NetworkService");
+                _driver = new ChromeDriver(outPutDirectory/*, option*/);
                 // Navigate to a website
                 _driver.Navigate().GoToUrl("https://slonczynski.github.io");
             }
@@ -73,7 +70,6 @@ namespace TodoAppTests
                 _driver.FindElement(By.Id("create-an-account-button"));
             }
 
-
             [TestMethod]
             public void TestCase3()
             {
@@ -89,38 +85,37 @@ namespace TodoAppTests
             [TestMethod]
             public void TestCase4()
             {
-            // Fill inputs
-            _driver.FindElement(By.Id("input-email")).SendKeys("automated@testing.selenium");
-            _driver.FindElement(By.Id("input-password")).SendKeys("123456");
+                // Fill inputs
+                _driver.FindElement(By.Id("input-email")).SendKeys("automated@testing.selenium");
+                _driver.FindElement(By.Id("input-password")).SendKeys("123456");
 
-            // Click login button
-            _driver.FindElement(By.Id("login-button")).Click();
+                // Click login button
+                _driver.FindElement(By.Id("login-button")).Click();
 
-            //Check if spinner works
+                //Check if spinner works
 
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
-            Assert.IsTrue(wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("spinning-button"))).Displayed);
+                var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+                Assert.IsTrue(wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("spinning-button"))).Displayed);
 
-            // Check redirection
-            Assert.IsTrue(wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("logout-button"))).Displayed);
-            var currentUrl = _driver.Url;
-            Assert.AreEqual("https://slonczynski.github.io/todo.html", currentUrl);
-            
+                // Check redirection
+                Assert.IsTrue(wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("logout-button"))).Displayed);
+                var currentUrl = _driver.Url;
+                Assert.AreEqual("https://slonczynski.github.io/todo.html", currentUrl);
             }
 
-        [TestMethod]
+            [TestMethod]
             public void TestCase5()
             {
-            // Fill inputs
-            _driver.FindElement(By.Id("input-email")).SendKeys("automated@testing.selenium");
-            _driver.FindElement(By.Id("input-password")).SendKeys("");
+                // Fill inputs
+                _driver.FindElement(By.Id("input-email")).SendKeys("automated@testing.selenium");
+                _driver.FindElement(By.Id("input-password")).SendKeys("");
 
-            // Submit
-            _driver.FindElement(By.Id("login-button")).Click();
+                // Submit
+                _driver.FindElement(By.Id("login-button")).Click();
 
-            //Check error message
-            var errorMessage = _driver.FindElement(By.Id("error-message")).Text;
-            Assert.AreEqual("The password is invalid or the user does not have a password.", errorMessage);
+                //Check error message
+                var errorMessage = _driver.FindElement(By.Id("error-message")).Text;
+                Assert.AreEqual("The password is invalid or the user does not have a password.", errorMessage);
             }
 
             [TestMethod]
@@ -136,7 +131,7 @@ namespace TodoAppTests
                 //Check error message
                 var errorMessage = _driver.FindElement(By.Id("error-message")).Text;
                 Assert.AreEqual("The email address is badly formatted.", errorMessage);
-        }
+            }
 
             [TestMethod]
             public void TestCase7()
@@ -150,25 +145,23 @@ namespace TodoAppTests
                 //Check error message
                 var errorMessage = _driver.FindElement(By.Id("error-message")).Text;
                 Assert.AreEqual("The email address is badly formatted.", errorMessage);
-        }
+            }
 
             [TestMethod]
             public void TestCase8()
             {
-            _driver.FindElement(By.Id("input-email")).SendKeys("automated@testing.selenium");
-            _driver.FindElement(By.Id("input-password")).SendKeys("1");
+                _driver.FindElement(By.Id("input-email")).SendKeys("automated@testing.selenium");
+                _driver.FindElement(By.Id("input-password")).SendKeys("1");
 
-            // Submit
-            _driver.FindElement(By.Id("login-button")).Click();
+                // Submit
+                _driver.FindElement(By.Id("login-button")).Click();
 
-            //Check error message
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
-            Assert.IsTrue(wait
-                .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("error-message")))
-                .Displayed);
-            var errorMessage = _driver.FindElement(By.Id("error-message")).Text;
-            Assert.AreEqual("The password is invalid or the user does not have a password.", errorMessage);
-        }
+                //Check error message
+                var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+                Assert.IsTrue(wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("error-message"))).Displayed);
+                var errorMessage = _driver.FindElement(By.Id("error-message")).Text;
+                Assert.AreEqual("The password is invalid or the user does not have a password.", errorMessage);
+            }
 
             [TestMethod]
             public void TestCase9()
@@ -179,21 +172,20 @@ namespace TodoAppTests
                 // Submit
                 _driver.FindElement(By.Id("login-button")).Click();
 
-            //Check error message
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
-            Assert.IsTrue(wait
-                .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("error-message")))
-                .Displayed);
-            var errorMessage = _driver.FindElement(By.Id("error-message")).Text;
+                //Check error message
+                var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+                Assert.IsTrue(wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("error-message"))).Displayed);
+                var errorMessage = _driver.FindElement(By.Id("error-message")).Text;
                 Assert.AreEqual("There is no user record corresponding to this identifier. The user may have been deleted.", errorMessage);
-        }
-        [TestMethod]
-        public void TestCase10()
-        {
+            }
+
+            [TestMethod]
+            public void TestCase10()
+            {
             _driver.FindElement(By.Id("create-an-account-button")).Click();
             var currentUrl = _driver.Url;
             Assert.AreEqual("https://slonczynski.github.io/register.html", currentUrl);
-        }
+            }
 
 
 
